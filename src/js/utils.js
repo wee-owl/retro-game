@@ -23,8 +23,29 @@
  * ```
  * */
 export function calcTileType(index, boardSize) {
-  // TODO: ваш код будет тут
-  return 'center';
+  let area;
+  const el = boardSize ** 2 - boardSize;
+  if (index >= boardSize ** 2) throw new Error('Invalid cell index value');
+  if (index === 0) {
+    area = 'top-left';
+  } else if (index === boardSize - 1) {
+    area = 'top-right';
+  } else if (index === boardSize ** 2 - 1) {
+    area = 'bottom-right';
+  } else if (index === el) {
+    area = 'bottom-left';
+  } else if (index > 0 && index < boardSize) {
+    area = 'top';
+  } else if (index > el && index < boardSize ** 2 - 1) {
+    area = 'bottom';
+  } else if (index > 0 && index < el && index % boardSize === 0) {
+    area = 'left';
+  } else if (index > boardSize - 1 && index < el && (index + 1) % boardSize === 0) {
+    area = 'right';
+  } else {
+    area = 'center';
+  }
+  return area;
 }
 
 export function calcHealthLevel(health) {

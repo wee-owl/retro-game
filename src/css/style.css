@@ -17,11 +17,12 @@ html, body {
 }
 
 body {
-  background: #000;
+  background: #1f5f2a;
 }
 
 .btn {
   display: inline-block;
+  font-family: 'Aclonica';
   font-weight: 400;
   color: #212529;
   background-color: #f8f9fa;
