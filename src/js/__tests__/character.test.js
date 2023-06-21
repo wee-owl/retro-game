@@ -19,21 +19,21 @@ test('checking for the creation of objects of inherited classes', () => {
   const daemon = new Daemon(1);
 
   expect(swordsman).toEqual({
-    level: 1, attack: 40, defence: 10, health: 50, type: 'Swordsman',
+    level: 1, attack: 40, defence: 10, health: 50, type: 'swordsman',
   });
   expect(magician).toEqual({
-    level: 1, attack: 10, defence: 40, health: 50, type: 'Magician',
+    level: 1, attack: 10, defence: 40, health: 50, type: 'magician',
   });
   expect(vampire).toEqual({
-    level: 1, attack: 25, defence: 25, health: 50, type: 'Vampire',
+    level: 1, attack: 25, defence: 25, health: 50, type: 'vampire',
   });
   expect(bowman).toEqual({
-    level: 1, attack: 25, defence: 25, health: 50, type: 'Bowman',
+    level: 1, attack: 25, defence: 25, health: 50, type: 'bowman',
   });
   expect(undead).toEqual({
-    level: 1, attack: 40, defence: 10, health: 50, type: 'Undead',
+    level: 1, attack: 40, defence: 10, health: 50, type: 'undead',
   });
   expect(daemon).toEqual({
-    level: 1, attack: 10, defence: 10, health: 50, type: 'Daemon',
+    level: 1, attack: 10, defence: 10, health: 50, type: 'daemon',
   });
 });
