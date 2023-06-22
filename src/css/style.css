@@ -10,13 +10,13 @@
   --cell-size: 64px;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
+html {
+  height: 100vh;
   font-family: 'Aclonica', sans-serif;
 }
 
 body {
+  margin: 0;
   background: #1f5f2a;
 }
 
