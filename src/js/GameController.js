@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import PositionedCharacter from './PositionedCharacter';
 import Swordsman from './characters/Swordsman';
 import Magician from './characters/Magician';
@@ -14,18 +12,24 @@ export default class GameController {
   constructor(gamePlay, stateService) {
     this.gamePlay = gamePlay;
     this.stateService = stateService;
+    this.boardSize = 8;
+    this.maxLevel = 4;
+    this.characterCount = 3;
     this.playerChar = [Bowman, Swordsman, Magician];
     this.enemyChar = [Daemon, Undead, Vampire];
+    this.playerTeam = this.getPositionedCharacter(this.renderTeam(this.playerChar), this.renderPosition('player'));
+    this.enemyTeam = this.getPositionedCharacter(this.renderTeam(this.enemyChar), this.renderPosition('enemy'));
   }
 
   init() {
     this.renderField(1);
 
-    const playerTeam = this.getPositionedCharacter(this.renderTeam(this.playerChar), this.renderPosition('player'));
-    const enemyTeam = this.getPositionedCharacter(this.renderTeam(this.enemyChar), this.renderPosition('enemy'));
-    this.gamePlay.redrawPositions(playerTeam.concat(enemyTeam));
+    this.gamePlay.redrawPositions(this.playerTeam.concat(this.enemyTeam));
 
     // add event listeners to gamePlay events
+    this.gamePlay.addCellEnterListener(this.onCellEnter.bind(this));
+    this.gamePlay.addCellLeaveListener(this.onCellLeave.bind(this));
+
     // load saved stated from stateService
   }
 
@@ -39,24 +43,21 @@ export default class GameController {
   }
 
   renderTeam(array) {
-    const maxLevel = 4;
-    const characterCount = 3;
-    const team = generateTeam(array, maxLevel, characterCount);
+    const team = generateTeam(array, this.maxLevel, this.characterCount);
     return team.characters;
   }
 
   renderPosition(typeTeam) {
-    const boardSize = 8;
     let positionArray = [];
     positionArray.length = 3;
 
     // array for players character (column 1-2)
-    const playerPositionArray = [...Array(boardSize ** 2)].map((_, i) => i)
-      .filter((i) => i % boardSize === 0 || (i - 1) % boardSize === 0);
+    const playerPositionArray = [...Array(this.boardSize ** 2)].map((_, i) => i)
+      .filter((i) => i % this.boardSize === 0 || (i - 1) % this.boardSize === 0);
 
     // array for enemy character (column 7-8)
-    const enemyPositionArray = [...Array(boardSize ** 2)].map((_, i) => i)
-      .filter((i) => (i + 1) % boardSize === 0 || (i + 2) % boardSize === 0);
+    const enemyPositionArray = [...Array(this.boardSize ** 2)].map((_, i) => i)
+      .filter((i) => (i + 1) % this.boardSize === 0 || (i + 2) % this.boardSize === 0);
 
     // render array from unique el
     function renderPositionArray(array) {
@@ -77,21 +78,34 @@ export default class GameController {
 
   getPositionedCharacter(team, positionArray) {
     const completeTeam = [];
-    for (let i = 0; i < team.length; i += 1) {
+    for (let i = 0; i < this.characterCount; i += 1) {
       completeTeam.push(new PositionedCharacter(team[i], positionArray[i]));
     }
     return completeTeam;
   }
 
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
   onCellClick(index) {
     // react to click
   }
 
   onCellEnter(index) {
-    // react to mouse enter
+    const boardArray = [...document.querySelector('.board').children];
+    const charsArray = this.playerTeam.concat(this.enemyTeam);
+
+    if (boardArray[index].children[0]) {
+      const char = charsArray.filter((i) => i.position === index)[0].character;
+      const message = GameController.showTooltip(char);
+      this.gamePlay.showCellTooltip(message, index);
+    }
+  }
+
+  static showTooltip(char) {
+    return `\u{1F396}${char.level}\u{2694}${char.attack}\u{1F6E1}${char.defence}\u{2764}${char.health}`;
   }
 
   onCellLeave(index) {
-    // react to mouse leave
+    const boardArray = [...document.querySelector('.board').children];
+    if (boardArray[index].children[0]) this.gamePlay.hideCellTooltip(index);
   }
 }
