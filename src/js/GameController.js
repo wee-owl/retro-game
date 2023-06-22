@@ -14,16 +14,15 @@ export default class GameController {
   constructor(gamePlay, stateService) {
     this.gamePlay = gamePlay;
     this.stateService = stateService;
+    this.playerChar = [Bowman, Swordsman, Magician];
+    this.enemyChar = [Daemon, Undead, Vampire];
   }
 
   init() {
     this.renderField(1);
 
-    const playerChar = [Bowman, Swordsman, Magician];
-    const enemyChar = [Daemon, Undead, Vampire];
-
-    const playerTeam = this.getPositionedCharacter(this.renderTeam(playerChar), this.renderPosition('player'));
-    const enemyTeam = this.getPositionedCharacter(this.renderTeam(enemyChar), this.renderPosition('enemy'));
+    const playerTeam = this.getPositionedCharacter(this.renderTeam(this.playerChar), this.renderPosition('player'));
+    const enemyTeam = this.getPositionedCharacter(this.renderTeam(this.enemyChar), this.renderPosition('enemy'));
     this.gamePlay.redrawPositions(playerTeam.concat(enemyTeam));
 
     // add event listeners to gamePlay events
@@ -55,27 +54,17 @@ export default class GameController {
     const playerPositionArray = [...Array(boardSize ** 2)].map((_, i) => i)
       .filter((i) => i % boardSize === 0 || (i - 1) % boardSize === 0);
 
-    // array for players character (column 7-8)
+    // array for enemy character (column 7-8)
     const enemyPositionArray = [...Array(boardSize ** 2)].map((_, i) => i)
       .filter((i) => (i + 1) % boardSize === 0 || (i + 2) % boardSize === 0);
 
-    // render random index from array
-    function renderIndex(array) {
-      return Math.floor(Math.random() * (array.length - 1));
-    }
-
-    // check array for unique el
-    function renderArray(array) {
-      const set = new Set(array);
-      return set.size === positionArray.length;
-    }
-
+    // render array from unique el
     function renderPositionArray(array) {
-      while (!renderArray(positionArray)) {
+      while ((new Set(positionArray)).size !== positionArray.length) {
         positionArray = [
-          array[renderIndex(array)],
-          array[renderIndex(array)],
-          array[renderIndex(array)],
+          array[Math.floor(Math.random() * (array.length - 1))],
+          array[Math.floor(Math.random() * (array.length - 1))],
+          array[Math.floor(Math.random() * (array.length - 1))],
         ];
       }
       return positionArray;
