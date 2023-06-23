@@ -261,3 +261,30 @@ body {
     font-size: 1.5rem;
   }
 }
+
+.message {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+  left: calc((100% - 300px)/2);
+  max-height: 100px;
+  max-width: 300px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: #fff5a6;
+  font-size: 1rem;
+  color: #630000;
+  z-index: 100;
+  animation: 0.5s anim ease-out;
+}
+
+@keyframes anim {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100px;
+  }
+}
