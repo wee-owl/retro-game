@@ -7,6 +7,7 @@ import Bowman from './characters/Bowman';
 import Daemon from './characters/Daemon';
 import Undead from './characters/Undead';
 import themes from './themes';
+import GamePlay from './GamePlay';
 
 export default class GameController {
   constructor(gamePlay, stateService) {
@@ -29,6 +30,7 @@ export default class GameController {
     // add event listeners to gamePlay events
     this.gamePlay.addCellEnterListener(this.onCellEnter.bind(this));
     this.gamePlay.addCellLeaveListener(this.onCellLeave.bind(this));
+    this.gamePlay.addCellClickListener(this.onCellClick.bind(this));
 
     // load saved stated from stateService
   }
@@ -84,9 +86,29 @@ export default class GameController {
     return completeTeam;
   }
 
-  // eslint-disable-next-line class-methods-use-this, no-unused-vars
   onCellClick(index) {
-    // react to click
+    const boardArray = [...document.querySelector('.board').children];
+
+    if (boardArray[index].children[0]
+      && this.playerChar.some((item) => item.name.toLowerCase()
+      === boardArray[index].children[0].classList[1])) {
+      if (!document.querySelector('.selected-yellow')) {
+        this.gamePlay.selectCell(index);
+      } else {
+        const pick = document.querySelectorAll('.selected-yellow');
+        [...pick].map((item) => item.classList.remove('selected-yellow'));
+        this.gamePlay.selectCell(index);
+      }
+    }
+
+    if (boardArray[index].children[0]
+      && this.enemyChar.some((item) => item.name.toLowerCase()
+      === boardArray[index].children[0].classList[1])) {
+      const message = 'Unavailable for next turn';
+      if (!document.querySelector('.message')) {
+        GamePlay.getMessage(message);
+      }
+    }
   }
 
   onCellEnter(index) {
