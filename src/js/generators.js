@@ -21,7 +21,9 @@ export function* characterGenerator(allowedTypes, maxLevel) {
   while (true) {
     index = randomInteger(0, allowedTypes.length);
     lvl = randomInteger(1, maxLevel);
-    yield new allowedTypes[index](lvl);
+    if (allowedTypes[index]) {
+      yield new allowedTypes[index](lvl);
+    }
   }
 }
 
