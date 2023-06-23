@@ -233,12 +233,8 @@ export default class GamePlay {
   static getMessage(message) {
     const div = document.createElement('div');
     div.classList.add('message');
-    div.innerHTML = `
-      <p class="message__content">${message}</p>
-    `;
+    div.innerHTML = `<p>${message}</p>`;
     document.querySelector('body').append(div);
-    setTimeout(() => {
-      div.remove();
-    }, 1000);
+    setTimeout(() => div.remove(), 1000);
   }
 }

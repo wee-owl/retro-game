@@ -277,7 +277,11 @@ body {
   font-size: 1rem;
   color: #630000;
   z-index: 100;
-  animation: 0.5s anim ease-out;
+  animation: 0.5s anim ease-in-out;
+}
+
+.message p {
+  margin: 0;
 }
 
 @keyframes anim {
